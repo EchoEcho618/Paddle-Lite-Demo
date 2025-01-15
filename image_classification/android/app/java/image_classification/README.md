@@ -349,3 +349,21 @@ public void onLoadModelSuccessed() {
 
 ## 性能优化方法
 如果你觉得当前性能不符合需求，想进一步提升模型性能，可参考[首页中性能优化文档](/README.md)完成性能优化。
+
+## UTS插件集成方法
+
+1. 在项目下创建新Module
+
+2. 复制app/src/main中的内容
+
+3. 根据实际情况调整代码
+
+4. 使用以下代码生成aar
+
+   ```bash
+   ./gradlew assembleRelease
+   ```
+
+
+
+5. 复制aar到UTS插件的utssdk/app-android/libs中供插件调用
