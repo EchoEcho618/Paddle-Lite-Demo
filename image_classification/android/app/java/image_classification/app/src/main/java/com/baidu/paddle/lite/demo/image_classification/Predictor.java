@@ -159,8 +159,8 @@ public class Predictor {
             String[] contents = words.split("\n");
             for (String content : contents) {
                 int first_space_pos = content.indexOf(" ");
-                if (first_space_pos >= 0 && first_space_pos < content.length()) {
-                    wordLabels.add(content.substring(first_space_pos));
+                if (first_space_pos >= 0) {
+                    wordLabels.add(content.substring(first_space_pos + 1));
                 }
             }
             Log.i(TAG, "Word label size: " + wordLabels.size());
