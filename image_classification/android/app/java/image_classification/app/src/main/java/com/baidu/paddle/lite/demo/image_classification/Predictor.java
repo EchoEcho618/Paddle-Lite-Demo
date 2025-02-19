@@ -9,8 +9,11 @@ import com.baidu.paddle.lite.PaddlePredictor;
 import com.baidu.paddle.lite.PowerMode;
 import com.baidu.paddle.lite.Tensor;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Date;
 import java.util.Vector;
 
@@ -149,18 +152,13 @@ public class Predictor {
     protected boolean loadLabel(Context appCtx, String labelPath) {
         wordLabels.clear();
         // Load word labels from file
-        try {
-            InputStream assetsInputStream = appCtx.getAssets().open(labelPath);
-            int available = assetsInputStream.available();
-            byte[] lines = new byte[available];
-            assetsInputStream.read(lines);
-            assetsInputStream.close();
-            String words = new String(lines);
-            String[] contents = words.split("\n");
-            for (String content : contents) {
-                int first_space_pos = content.indexOf(" ");
-                if (first_space_pos >= 0) {
-                    wordLabels.add(content.substring(first_space_pos + 1));
+        try (InputStream assetsInputStream = appCtx.getAssets().open(labelPath);
+             BufferedReader reader = new BufferedReader(new InputStreamReader(assetsInputStream, "UTF-8"))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                int firstSpacePos = line.indexOf(" ");
+                if (firstSpacePos >= 0) {
+                    wordLabels.add(line.substring(firstSpacePos + 1));
                 }
             }
             Log.i(TAG, "Word label size: " + wordLabels.size());
